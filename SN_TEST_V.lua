@@ -7,6 +7,15 @@ function unsignedToSigned16bit(value)
     end
 end
 
+-- Function to convert a 16-bit value to a percentage with two decimal places
+function convert_to_percentage(value)    
+    -- Calculate the percentage
+    local percentage = (value / 65535) * 100
+    
+    -- Format the percentage to two decimal places
+    return string.format("%.2f", percentage)
+end
+
 -- Define a function to parse payload and decode sensor data
 function parsePayload(appeui, deveui, payloadIn)
     -- Decode the payload into individual variables
@@ -45,10 +54,12 @@ function parsePayload(appeui, deveui, payloadIn)
   
   	-- RAW ANALOGIC SENSORS --
     local moisture_array = {payload[11], payload[12]}
- 	local moisture = resiot_ba2intLE16(moisture_array)
+ 	local moisture_16bit = resiot_ba2intLE16(moisture_array)
+  	local moisture = convert_to_percentage(moisture_16bit)
   
     local light_array = {payload[13], payload[14]}
- 	local light = resiot_ba2intLE16(light_array)
+ 	local light_16bit = resiot_ba2intLE16(light_array)
+  	local light = convert_to_percentage(light_16bit)
   
 	-- TCS34725 --
   	local clear_array = {payload[15], payload[16]}
