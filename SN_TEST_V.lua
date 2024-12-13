@@ -1,25 +1,37 @@
+-- Define a function to convert unsigned 16-bit to signed 16-bit (uint16_t [0 - 65635], int16_t [-32768 - 32767])
+function unsignedToSigned16bit(value)
+    if value >= 32768 then
+        return value - 65536
+    else
+        return value
+    end
+end
+
 -- Define a function to parse payload and decode sensor data
 function parsePayload(appeui, deveui, payloadIn)
     -- Decode the payload into individual variables
     payload, Error = resiot_hexdecode(payloadIn)
   	if Error ~= "" then
     	-- error 
-        resiot_debug(Error)
+        --resiot_debug(Error)
     else
         -- value read correctly
-        resiot_debug(ArrByte)
+        --resiot_debug(ArrByte)
     end
   	-- ACCELEROMETER --
   	local ax_array = {payload[1], payload[2]}
   	local ax_16bit = resiot_ba2intLE16(ax_array)
+    ax_16bit = unsignedToSigned16bit(ax_16bit) -- Convert to signed
     local ax = (ax_16bit / 4095) * 9.81
   
     local ay_array = {payload[3], payload[4]}
   	local ay_16bit = resiot_ba2intLE16(ay_array)
+    ay_16bit = unsignedToSigned16bit(ay_16bit)
   	local ay = (ay_16bit / 4095) * 9.81
   
     local az_array = {payload[5], payload[6]}
   	local az_16bit = resiot_ba2intLE16(az_array)
+  	az_16bit = unsignedToSigned16bit(az_16bit)
   	local az = (az_16bit / 4095) * 9.81
 
   	-- Si7021 --
@@ -59,16 +71,16 @@ function parsePayload(appeui, deveui, payloadIn)
  	local Longitude = resiot_ba2float32LE(Longitude_array)
 
   	-- Log payload bytes
-    for i = 1, #payload do
+    --for i = 1, #payload do
         -- Print each byte in decimal and hexadecimal formats
-        resiot_debug(string.format("Hex %d = 0x%02X", i, payload[i]))
-    end
+        --resiot_debug(string.format("Hex %d = 0x%02X", i, payload[i]))
+    --end
   
     -- Log decoded values
-    resiot_debug(string.format("Decoded Values: Ax=%d, Ay=%d, Az=%d, Temp=%d, Humidity=%d, Moist=%d, Light=%d, C=%d, R=%d, G=%d, B=%d, Lat=%.6f, Lon=%.6f", ax_16bit, ay_16bit, az_16bit, temperature_16bit, humidity_16bit, moisture_16bit, light_16bit, clear, red, green, blue, Latitude, Longitude))
+    --resiot_debug(string.format("Decoded Values: Ax=%d, Ay=%d, Az=%d, Temp=%d, Humidity=%d, Moist=%d, Light=%d, C=%d, R=%d, G=%d, B=%d, Lat=%.6f, Lon=%.6f", ax_16bit, ay_16bit, az_16bit, temperature_16bit, humidity_16bit, moisture_16bit, light_16bit, clear, red, green, blue, Latitude, Longitude))
 
       -- Log processed values
-    resiot_debug(string.format("Processed Values: Ax=%.2f, Ay=%.2f, Az=%.2f, Temp=%.2f, Humidity=%.2f, Moist=%d, Light=%d, C=%d, R=%d, G=%d, B=%d, Lat=%.6f, Lon=%.6f", ax, ay, az, temperature, humidity, moisture, light, clear, red, green, blue, Latitude, Longitude))
+    --resiot_debug(string.format("Processed Values: Ax=%.2f, Ay=%.2f, Az=%.2f, Temp=%.2f, Humidity=%.2f, Moist=%d, Light=%d, C=%d, R=%d, G=%d, B=%d, Lat=%.6f, Lon=%.6f", ax, ay, az, temperature, humidity, moisture, light, clear, red, green, blue, Latitude, Longitude))
   
     -- Set values to ResIOT tags
     local worked, err
@@ -77,79 +89,79 @@ function parsePayload(appeui, deveui, payloadIn)
   
     worked, err = resiot_setnodevalue(appeui, deveui, "ax", ax)
     if not worked then
-        resiot_debug(string.format("Error setting ax: %s", err))
+        --resiot_debug(string.format("Error setting ax: %s", err))
     end
   
     worked, err = resiot_setnodevalue(appeui, deveui, "ay", ay)
     if not worked then
-        resiot_debug(string.format("Error setting ay: %s", err))
+        --resiot_debug(string.format("Error setting ay: %s", err))
     end
   
     worked, err = resiot_setnodevalue(appeui, deveui, "az", az)
     if not worked then
-        resiot_debug(string.format("Error setting az: %s", err))
+        --resiot_debug(string.format("Error setting az: %s", err))
     end
 
 -- ---------------------------------------------------------------------------------------
   
     worked, err = resiot_setnodevalue(appeui, deveui, "temperature", temperature)
     if not worked then
-        resiot_debug(string.format("Error setting temperature: %s", err))
+        --resiot_debug(string.format("Error setting temperature: %s", err))
     end
 
     worked, err = resiot_setnodevalue(appeui, deveui, "humidity", humidity)
     if not worked then
-        resiot_debug(string.format("Error setting humidity: %s", err))
+        --resiot_debug(string.format("Error setting humidity: %s", err))
     end
   
 -- ---------------------------------------------------------------------------------------
   
     worked, err = resiot_setnodevalue(appeui, deveui, "moisture", moisture)
     if not worked then
-        resiot_debug(string.format("Error setting moisture: %s", err))
+        --resiot_debug(string.format("Error setting moisture: %s", err))
     end
   
     worked, err = resiot_setnodevalue(appeui, deveui, "light", light)
     if not worked then
-        resiot_debug(string.format("Error setting light: %s", err))
+        --resiot_debug(string.format("Error setting light: %s", err))
     end
   
 -- ---------------------------------------------------------------------------------------
  
     worked, err = resiot_setnodevalue(appeui, deveui, "clear", clear)
     if not worked then
-        resiot_debug(string.format("Error setting clear: %s", err))
+        --resiot_debug(string.format("Error setting clear: %s", err))
     end
   
     worked, err = resiot_setnodevalue(appeui, deveui, "red", red)
     if not worked then
-        resiot_debug(string.format("Error setting red: %s", err))
+        --resiot_debug(string.format("Error setting red: %s", err))
     end
 
     worked, err = resiot_setnodevalue(appeui, deveui, "green", green)
     if not worked then
-        resiot_debug(string.format("Error setting green: %s", err))
+        --resiot_debug(string.format("Error setting green: %s", err))
     end
 
     worked, err = resiot_setnodevalue(appeui, deveui, "blue", blue)
     if not worked then
-        resiot_debug(string.format("Error setting blue: %s", err))
+        --resiot_debug(string.format("Error setting blue: %s", err))
     end
   
 -- ---------------------------------------------------------------------------------------
 
     worked, err = resiot_setnodevalue(appeui, deveui, "Latitude", Latitude)
     if not worked then
-        resiot_debug(string.format("Error setting Latitude: %s", err))
+        --resiot_debug(string.format("Error setting Latitude: %s", err))
     end
 
     worked, err = resiot_setnodevalue(appeui, deveui, "Longitude", Longitude)
     if not worked then
-        resiot_debug(string.format("Error setting Longitude: %s", err))
+        --resiot_debug(string.format("Error setting Longitude: %s", err))
     end
   
 
-    resiot_debug("All values successfully processed.")
+    --resiot_debug("All values successfully processed.")
 end
 
 -- Main script execution
@@ -170,7 +182,7 @@ else -- Normal execution, get payload received from device
     deveui = resiot_comm_getparam("deveui")
     payload, err = resiot_getlastpayload(appeui, deveui)
     if not payload then
-        resiot_debug(string.format("Error getting payload: %s", err))
+        --resiot_debug(string.format("Error getting payload: %s", err))
         return
     end
 end
