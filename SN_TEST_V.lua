@@ -32,38 +32,45 @@ function parsePayload(appeui, deveui, payloadIn)
   	local ax_16bit = resiot_ba2intLE16(ax_array)
     ax_16bit = unsignedToSigned16bit(ax_16bit) -- Convert to signed
     local ax = (ax_16bit / 4095) * 9.81
+	ax = tonumber(string.format("%.2f", ax))
   
     local ay_array = {payload[3], payload[4]}
   	local ay_16bit = resiot_ba2intLE16(ay_array)
     ay_16bit = unsignedToSigned16bit(ay_16bit)
   	local ay = (ay_16bit / 4095) * 9.81
+  	ay = tonumber(string.format("%.2f", ay))
   
     local az_array = {payload[5], payload[6]}
   	local az_16bit = resiot_ba2intLE16(az_array)
   	az_16bit = unsignedToSigned16bit(az_16bit)
   	local az = (az_16bit / 4095) * 9.81
+  	az = tonumber(string.format("%.2f", az))
 
   	-- Si7021 --
     local temperature_array = {payload[7], payload[8]}
   	local temperature_16bit = resiot_ba2intLE16(temperature_array)
   	local temperature = ((175.72 * temperature_16bit) / 65536) - 46.85
+  	temperature = tonumber(string.format("%.2f", temperature))
   
     local humidity_array = {payload[9], payload[10]}
  	local humidity_16bit = resiot_ba2intLE16(humidity_array)
   	local humidity = ((125 * humidity_16bit) / 65536) - 6
+  	humidity = tonumber(string.format("%.2f", humidity))
   
   	-- RAW ANALOGIC SENSORS --
     local moisture_array = {payload[11], payload[12]}
  	local moisture_16bit = resiot_ba2intLE16(moisture_array)
   	local moisture = convert_to_percentage(moisture_16bit)
+  	moisture = tonumber(string.format("%.2f", moisture))
   
     local light_array = {payload[13], payload[14]}
  	local light_16bit = resiot_ba2intLE16(light_array)
   	local light = convert_to_percentage(light_16bit)
+  	light = tonumber(string.format("%.2f", light))
   
 	-- TCS34725 --
-  	local clear_array = {payload[15], payload[16]}
- 	local clear = resiot_ba2intLE16(clear_array)
+  	--local clear_array = {payload[15], payload[16]}
+ 	--local clear = resiot_ba2intLE16(clear_array)
   
   	local red_array = {payload[17], payload[18]}
  	local red = resiot_ba2intLE16(red_array)
@@ -73,6 +80,8 @@ function parsePayload(appeui, deveui, payloadIn)
   
   	local blue_array = {payload[21], payload[22]}
  	local blue = resiot_ba2intLE16(blue_array)
+  
+  	local clear = red + green + blue
   
 	-- GPS --
   	local Latitude_array = {payload[23], payload[24], payload[25], payload[26]}
