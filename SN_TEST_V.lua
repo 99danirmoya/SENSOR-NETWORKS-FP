@@ -69,25 +69,22 @@ function parsePayload(appeui, deveui, payloadIn)
   	light = tonumber(string.format("%.2f", light))
   
 	-- TCS34725 --
-  	--local clear_array = {payload[15], payload[16]}
- 	--local clear = resiot_ba2intLE16(clear_array)
-  
-  	local red_array = {payload[17], payload[18]}
+  	local red_array = {payload[15], payload[16]}
  	local red = resiot_ba2intLE16(red_array)
   
-  	local green_array = {payload[19], payload[20]}
+  	local green_array = {payload[17], payload[18]}
  	local green = resiot_ba2intLE16(green_array)
   
-  	local blue_array = {payload[21], payload[22]}
+  	local blue_array = {payload[19], payload[20]}
  	local blue = resiot_ba2intLE16(blue_array)
   
-  	local clear = red + green + blue
+  	local clear = red + green + blue  -- Clear channel is the sum of the RGB channels. Calculated in ResIOT to make the TX_BUFFER smaller
   
 	-- GPS --
-  	local Latitude_array = {payload[23], payload[24], payload[25], payload[26]}
+  	local Latitude_array = {payload[21], payload[22], payload[23], payload[24]}
  	local Latitude = resiot_ba2float32LE(Latitude_array)
   
-  	local Longitude_array = {payload[27], payload[28], payload[29], payload[30]}
+  	local Longitude_array = {payload[25], payload[26], payload[27], payload[28]}
  	local Longitude = resiot_ba2float32LE(Longitude_array)
 
   	-- Log payload bytes
@@ -191,7 +188,7 @@ if Origin == "Manual" then -- Manual script execution for testing
     -- Generate a random payload
     math.randomseed(os.time())
     payload = ""
-    for i = 1, 30 do
+    for i = 1, 28 do
         payload = payload .. string.format("%02X", math.random(0, 255))
     end
   
