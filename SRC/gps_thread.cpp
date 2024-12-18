@@ -14,8 +14,8 @@ static char buffer[GPS_BUFFER_SIZE];                                  // GPS sen
 static int bufferIndex = 0;
 
 // Variables to store GPS fields
-uint8_t fix_status = 0;
-float latitude = 0.0f, longitude = 0.0f;
+volatile uint8_t fix_status = 0;
+volatile float latitude = 0.0f, longitude = 0.0f;
 
 // FUNCTION PROTOTYPES -----------------------------------------------------------------
 static void settingFrequency();
@@ -23,6 +23,9 @@ static void enableGettingStatusFromAntenna();
 static void initializesSerialPort();
 static bool parse_GPS_data(char *nmea_data);
 static void read_GPS();
+uint8_t get_fix_status();
+float get_latitude();
+float get_longitude();
 
 // =====================================================================================
 // GPS MAIN FUNCTION
@@ -35,9 +38,6 @@ void gps_th_routine(){
 
     while (true) {
         read_GPS();                                                   // Read and process GPS data
-
-        //sending message through message queue
-
         ThisThread::sleep_for(GPS_THREAD_SLEEP);
     }
 }
@@ -88,6 +88,7 @@ static bool parse_GPS_data(char *nmea_data){
                 float raw_latitude = atof(token);
                 int degrees = (int)(raw_latitude / 100);
                 float minutes = raw_latitude - (degrees * 100);
+                
                 latitude = degrees + minutes / 60.0f;
             }
 
@@ -101,6 +102,7 @@ static bool parse_GPS_data(char *nmea_data){
                 float raw_longitude = atof(token);
                 int degrees = (int)(raw_longitude / 100);
                 float minutes = raw_longitude - (degrees * 100);
+                
                 longitude = degrees + minutes / 60.0f;
             }
 
@@ -126,8 +128,7 @@ static void read_GPS(){
             buffer[bufferIndex] = '\0';                               // Null-terminate the string
             bufferIndex = 0;
 
-            // Parse GPS data if it's a GPGGA sentence
-            parse_GPS_data(buffer);
+            parse_GPS_data(buffer);                                   // Parse GPS data if it's a GPGGA sentence
         } else {
             buffer[bufferIndex++] = c;
             if (bufferIndex >= sizeof(buffer) - 1) {
@@ -135,4 +136,22 @@ static void read_GPS(){
             }
         }
     }
+}
+
+uint8_t get_fix_status() {
+    uint8_t fix;
+    fix = fix_status;
+    return fix;
+}
+
+float get_latitude() {
+    float lat;
+    lat = latitude;
+    return lat;
+}
+
+float get_longitude() {
+    float lon;
+    lon = longitude;
+    return lon;
 }

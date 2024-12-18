@@ -28,10 +28,7 @@
 // ==============================================================================================
 // PROTOTYPES
 // ==============================================================================================
-uint8_t get_fix_status();                     // Getter for the fix
-float get_latitude();                         // Getter for the lat
-float get_longitude();                        // Getter for the lon
-void gps_th_routine();                        // GPS loop
+extern void gps_th_routine();
 // PROTOTYPES END ===============================================================================
 
 #endif
