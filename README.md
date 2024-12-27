@@ -1,7 +1,7 @@
 # SENSOR-NETWORKS-FP
 
 <div align="center">
-  <img src="https://github.com/99danirmoya/SENSOR-NETWORKS-FP/blob/main/DOCS/Diagrama%20en%20blanco.jpeg" width="900"  style="margin: 10px;"/>
+  <img src="https://github.com/99danirmoya/SENSOR-NETWORKS-FP/blob/main/DOCS/Diagrama%20en%20blanco%20(1).jpeg" width="900"  style="margin: 10px;"/>
   
   <em>Project's flow diagram</em>
 </div>
