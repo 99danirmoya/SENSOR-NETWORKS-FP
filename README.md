@@ -29,7 +29,7 @@
 <br/>
 
 <div align="center">
-  <img src="https://github.com/99danirmoya/SENSOR-NETWORKS-FP/blob/main/DOCS/5904761398804727049.jpg" width="900"  style="margin: 10px;"/>
+  <img src="https://github.com/99danirmoya/SENSOR-NETWORKS-FP/blob/main/DOCS/5994586782919935922.jpg" width="900"  style="margin: 10px;"/>
   
   <em>Project's demo</em>
 </div>
