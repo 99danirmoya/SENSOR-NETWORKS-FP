@@ -1,6 +1,6 @@
 # SENSOR-NETWORKS-FP
 
-[`ACCESS THE MEMORY OF THE PROJECT TO GET ALL THE INFORMATION`](https://github.com/99danirmoya/EMBEDDED-SYSTEMS-FP/blob/main/DOCS/project-report-alvaro-daniel.pdf)
+[`ACCESS THE MEMORY OF THE PROJECT TO GET ALL THE INFORMATION`](https://github.com/99danirmoya/SENSOR-NETWORKS-FP/blob/main/DOCS/project-report-daniel-rodriguez-moya.pdf)
 
 <div align="center">
   <img src="https://github.com/99danirmoya/SENSOR-NETWORKS-FP/blob/main/DOCS/Diagrama%20en%20blanco%20(1).jpeg" width="900"  style="margin: 10px;"/>
